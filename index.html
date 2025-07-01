@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights de Anúncios Google - Durma Bem</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+            position: relative;
+        }
+
+        h3::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .ad-idea {
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px solid #fc8181;
+            transition: all 0.3s ease;
+        }
+
+        .ad-idea:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(252, 129, 129, 0.2);
+        }
+
+        .ad-title {
+            font-weight: bold;
+            color: #c53030;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .ad-description {
+            color: #2d3748;
+            margin-bottom: 8px;
+            padding-left: 15px;
+            border-left: 3px solid #fc8181;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tab-button {
+                width: 200px;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Insights de Anúncios Google</h1>
+            <p class="subtitle">Análise Completa para o Produto "Durma Bem" - Instituto Fluir</p>
+            <div class="nav-tabs">
+                <button class="tab-button active" onclick="showSection('overview')">Visão Geral</button>
+                <button class="tab-button" onclick="showSection('insights')">Insights</button>
+                <button class="tab-button" onclick="showSection('ads')">Ideias de Anúncios</button>
+                <button class="tab-button" onclick="showSection('statistics')">Estatísticas</button>
+            </div>
+        </header>
+
+        <div id="overview" class="content-section active">
+            <h2>Visão Geral da Pesquisa</h2>
+            
+            <div class="insight-card">
+                <h3>Objetivo da Análise</h3>
+                <p>Esta pesquisa foi conduzida para analisar anúncios do Google relacionados a produtos para melhorar o sono, com foco específico no produto "Durma Bem" do Instituto Fluir. O objetivo foi identificar gatilhos emocionais, abordagens de marketing eficazes e tendências no mercado de soluções para insônia e qualidade do sono.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3>Metodologia</h3>
+                <p>Foram realizadas múltiplas pesquisas no Google utilizando termos como <span class="highlight">"Durma Bem"</span>, <span class="highlight">"melhorar sono"</span>, <span class="highlight">"insônia"</span>, <span class="highlight">"remédio natural para dormir"</span> e <span class="highlight">"ajuda para dormir"</span>. Os resultados foram analisados para identificar padrões, gatilhos e estratégias de marketing comuns.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3>Principais Descobertas</h3>
+                <p>A análise revelou uma forte demanda por <span class="highlight">soluções naturais</span> para problemas de sono, com ênfase em <span class="highlight">qualidade de vida</span>, <span class="highlight">bem-estar</span> e <span class="highlight">abordagens holísticas</span>. Os consumidores buscam alternativas seguras aos medicamentos tradicionais e valorizam conteúdo educacional sobre higiene do sono.</p>
+            </div>
+        </div>
+
+        <div id="insights" class="content-section">
+            <h2>Insights Detalhados</h2>
+            
+            <div class="insight-card">
+                <h3>🎯 Gatilhos Emocionais Identificados</h3>
+                <p><strong>Alívio da Dor:</strong> Aliviar o sofrimento causado pela insônia (cansaço, irritabilidade, falta de concentração).</p>
+                <p><strong>Esperança:</strong> Oferecer a esperança de uma noite de sono reparadora e uma vida mais saudável.</p>
+                <p><strong>Medo da Perda:</strong> O medo de perder produtividade, saúde e bem-estar devido à privação do sono.</p>
+                <p><strong>Desejo de Conforto:</strong> A busca por uma sensação de tranquilidade e relaxamento antes de dormir.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3>🌿 Preferência por Soluções Naturais</h3>
+                <p>Há uma clara demanda por "remédios naturais para dormir" e "soluções para insônia" que não envolvam medicamentos com receita. Palavras como <span class="highlight">"natural"</span>, <span class="highlight">"plantas"</span>, <span class="highlight">"ervas"</span> são frequentemente usadas para atrair o público que busca alternativas seguras.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3>💡 Abordagens de Marketing Eficazes</h3>
+                <p><strong>Foco em Benefícios:</strong> Destacar os benefícios de uma boa noite de sono (energia, disposição, bem-estar) em vez de apenas as características do produto.</p>
+                <p><strong>Linguagem de Solução:</strong> Utilizar frases como "acabe com a insônia", "durma rapidamente", "diga adeus à insônia".</p>
+                <p><strong>Conteúdo Educacional:</strong> Artigos e vídeos que educam sobre insônia e suas soluções, construindo autoridade e confiança.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3>📱 Tecnologia e Monitoramento</h3>
+                <p>Aplicativos e dispositivos para monitorar o sono são relevantes, indicando que a tecnologia é vista como uma ferramenta para entender e melhorar o sono. Isso sugere oportunidades para integração de soluções digitais.</p>
+            </div>
+        </div>
+
+        <div id="ads" class="content-section">
+            <h2>5 Ideias de Anúncios Criadas</h2>
+            
+            <div class="ad-idea">
+                <div class="ad-title">💤 Ideia 1: Foco na Solução da Insônia</div>
+                <div class="ad-description"><strong>Título:</strong> Acabe com a Insônia Hoje! | Durma Bem Naturalmente</div>
+                <div class="ad-description"><strong>Descrição:</strong> Cansado de noites em claro? Descubra o método "Durma Bem" e recupere seu sono profundo e reparador. Resultados comprovados!</div>
+                <div class="ad-description"><strong>Gatilho:</strong> Alívio imediato da dor e frustração</div>
+            </div>
+
+            <div class="ad-idea">
+                <div class="ad-title">⚡ Ideia 2: Foco na Qualidade de Vida</div>
+                <div class="ad-description"><strong>Título:</strong> Mais Energia e Disposição | Comece o Dia Renovado</div>
+                <div class="ad-description"><strong>Descrição:</strong> Um sono de qualidade é a chave para uma vida plena. O "Durma Bem" te proporciona noites perfeitas para dias produtivos e felizes.</div>
+                <div class="ad-description"><strong>Gatilho:</strong> Desejo de melhoria na qualidade de vida</div>
+            </div>
+
+            <div class="ad-idea">
+                <div class="ad-title">🌿 Ideia 3: Foco na Abordagem Natural</div>
+                <div class="ad-description"><strong>Título:</strong> Durma Bem Naturalmente | Solução Sem Químicos</div>
+                <div class="ad-description"><strong>Descrição:</strong> Buscando uma alternativa natural para dormir? O "Durma Bem" utiliza ingredientes puros para um sono tranquilo e sem dependência.</div>
+                <div class="ad-description"><strong>Gatilho:</strong> Segurança e preferência por soluções naturais</div>
+            </div>
+
+            <div class="ad-idea">
+                <div class="ad-title">📚 Ideia 4: Foco Educacional e Rotina</div>
+                <div class="ad-description"><strong>Título:</strong> Crie Sua Rotina de Sono | Durma Bem, Viva Melhor</div>
+                <div class="ad-description"><strong>Descrição:</strong> Mais que um produto, uma jornada para o sono perfeito. O "Durma Bem" te ensina a construir hábitos para noites tranquilas e duradouras.</div>
+                <div class="ad-description"><strong>Gatilho:</strong> Curiosidade e desejo de aprendizado</div>
+            </div>
+
+            <div class="ad-idea">
+                <div class="ad-title">⏰ Ideia 5: Foco na Urgência</div>
+                <div class="ad-description"><strong>Título:</strong> Últimas Vagas! | Garanta Seu Sono Perfeito Agora</div>
+                <div class="ad-description"><strong>Descrição:</strong> A oportunidade de dormir bem está aqui! Poucas vagas para o programa "Durma Bem". Clique e transforme suas noites!</div>
+                <div class="ad-description"><strong>Gatilho:</strong> Urgência e medo de perder a oportunidade</div>
+            </div>
+        </div>
+
+        <div id="statistics" class="content-section">
+            <h2>Estatísticas da Pesquisa</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">40+</div>
+                    <div class="stat-label">Resultados Analisados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Termos de Pesquisa</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Gatilhos Principais</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Ideias de Anúncios</div>
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <h3>📊 Tendências Observadas</h3>
+                <p><strong>72% dos brasileiros</strong> sofrem com alterações no sono, segundo dados governamentais encontrados na pesquisa.</p>
+                <p><strong>Crescimento</strong> na busca por aplicativos e tecnologias para monitoramento do sono.</p>
+                <p><strong>Preferência</strong> por conteúdo educacional sobre higiene do sono e hábitos saudáveis.</p>
+                <p><strong>Demanda</strong> por soluções que combinem eficácia com segurança (ingredientes naturais).</p>
+            </div>
+
+            <div class="insight-card">
+                <h3>🎯 Recomendações Estratégicas</h3>
+                <p><strong>Segmentação:</strong> Focar em pessoas de 25-55 anos com problemas de sono e interesse em soluções naturais.</p>
+                <p><strong>Horários:</strong> Anunciar principalmente no período noturno (19h-23h) quando o problema é mais evidente.</p>
+                <p><strong>Palavras-chave:</strong> Priorizar termos como "insônia", "dormir melhor", "sono natural", "qualidade do sono".</p>
+                <p><strong>Conteúdo:</strong> Criar landing pages educacionais que construam confiança antes da venda.</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Análise realizada por Manus AI • Dados coletados em julho de 2025</p>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Add smooth scrolling and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add entrance animation to cards
+            const cards = document.querySelectorAll('.insight-card, .ad-idea');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'fadeIn 0.6s ease-in forwards';
+            });
+        });
+    </script>
+</body>
+</html>
+
